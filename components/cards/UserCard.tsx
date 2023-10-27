@@ -14,6 +14,7 @@ interface Props{
 
 const UserCard = ({id,name,username,imgUrl,personType}:Props) => {
     const router = useRouter()
+    const isCommunity = personType === "Community";
   return (
     <article className="user-card">
         <div className='user-card_avatar'>
@@ -22,7 +23,7 @@ const UserCard = ({id,name,username,imgUrl,personType}:Props) => {
             alt = "profile image"
             width={48}
             height={48}
-            className="rounded-full"  
+            className="rounded-full object-cover"  
             />
             <div className='flex-1 text-ellipsis'>
                 <h4 className="text-base-semibold text-light-1">{name}</h4>
@@ -33,7 +34,13 @@ const UserCard = ({id,name,username,imgUrl,personType}:Props) => {
 
         </div>
 
-        <Button className='user-card_btn' onClick={()=>router.push(`/profile/${id}`)}>
+        <Button className='user-card_btn' onClick={() => {
+          if (isCommunity) {
+            router.push(`/communities/${id}`);
+          } else {
+            router.push(`/profile/${id}`);
+          }
+        }}>
             View
         </Button>
 
