@@ -5,6 +5,8 @@ import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import Comment from "@/components/forms/Comment";
 
+export const revalidate = 0;
+
 const Page = async({params}:{params:{id:string}}) =>{
   if (!params.id) return null;
   const user = await currentUser();
@@ -31,7 +33,7 @@ const Page = async({params}:{params:{id:string}}) =>{
       </div>
       <div className="mt-7">
         <Comment 
-        threadId = {thread.id}
+        threadId = {params.id}
         currentUserImg = {userInfo.image}
         currentUserId = {JSON.stringify(userInfo._id)}
         />
@@ -39,15 +41,16 @@ const Page = async({params}:{params:{id:string}}) =>{
       <div className="mt-10">
         {thread.children.map((childItem:any)=>(
           <ThreadCard 
-          id={childItem._id}
-          currentUserId={childItem.id}
-          parentId={childItem.parentId}
-          content={childItem.text}
-          author={childItem.author}
-          community={childItem.community}
-          createdAt={childItem.createdAt}
-          comments={childItem.children}
-          isComment
+            key={childItem._id}
+            id={childItem._id}
+            currentUserId={user.id}
+            parentId={childItem.parentId}
+            content={childItem.text}
+            author={childItem.author}
+            community={childItem.community}
+            createdAt={childItem.createdAt}
+            comments={childItem.children}
+            isComment
           
           />
         ))}

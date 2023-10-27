@@ -31,7 +31,7 @@ interface Props{
 
 }
 const Comment = ({threadId,currentUserImg,currentUserId}:Props) =>{
-    const router = useRouter()
+    
     const pathname = usePathname()
   
       
@@ -43,9 +43,10 @@ const Comment = ({threadId,currentUserImg,currentUserId}:Props) =>{
     });
   
           const onSubmit = async(values:z.infer<typeof CommentValidation>) =>{
-           
-            
-              await addCommentToThread(threadId,values.thread,JSON.parse(currentUserId),pathname)
+              await addCommentToThread(threadId,
+                values.thread,
+                JSON.parse(currentUserId),
+                pathname)
               form.reset()
                     
   
@@ -91,7 +92,7 @@ const Comment = ({threadId,currentUserImg,currentUserId}:Props) =>{
     </FormItem>
     )}
     />
-    <Button type='submit' className='comment-form_btn'>Post Thread</Button>
+    <Button type='submit' className='comment-form_btn'>Reply</Button>
     
     </form>
     </Form>

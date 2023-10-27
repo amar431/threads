@@ -2,9 +2,15 @@
 import { currentUser } from "@clerk/nextjs"
 import { fetchPosts } from "@/lib/actions/thread.actions"
 import ThreadCard from "@/components/cards/ThreadCard"
+import Pagination from "@/components/shared/pagination";
 
-export default async function Home() {
-  const result = await fetchPosts(1,20)
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined };
+}) {
+  const result = await fetchPosts(searchParams.page ? +searchParams.page : 1,
+    30)
   const user = await currentUser()
 
   console.log(result)
@@ -33,9 +39,12 @@ export default async function Home() {
             ))}
           </>
         )}
-
-
       </section>
+      <Pagination
+        path='/'
+        pageNumber={searchParams?.page ? +searchParams.page : 1}
+        isNext={result.isNext}
+      />
     </>
   )
 }
